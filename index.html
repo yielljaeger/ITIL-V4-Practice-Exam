@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ITIL 4 Foundation – 40-Question Real Exam</title>
+<style>
+  body {font-family:Arial,Helvetica,sans-serif; max-width:900px; margin:40px auto; background:#f9f9f9; line-height:1.6; color:#333;}
+  h1 {color:#8B4513; text-align:center;}
+  input#name {width:300px; padding:10px; font-size:1.1em; margin:20px auto; display:block;}
+  .q {background:#fff; padding:20px; margin:15px 0; border-left:5px solid #8B4513; box-shadow:0 2px 8px rgba(0,0,0,.1); border-radius:4px;}
+  label {display:block; margin:8px 0; cursor:pointer; padding:5px;}
+  input[type=radio] {margin-right:10px;}
+  button {display:block; margin:30px auto; padding:15px 40px; font-size:1.2em; background:#8B4513; color:#fff; border:none; border-radius:4px; cursor:pointer;}
+  #examArea {display:none;}
+  #result {display:none; background:#fff; padding:30px; border:3px solid #8B4513; border-radius:8px; margin-top:30px;}
+  .bar {height:12px; background:#ddd; width:110px; display:inline-block; vertical-align:middle; border-radius:6px; overflow:hidden;}
+  .fill {height:100%; background:#8B4513; border-radius:6px;}
+  table {width:100%; border-collapse:collapse; margin:20px 0; font-size:0.95em;}
+  td, th {border-bottom:1px solid #ccc; padding:10px; text-align:left;}
+  th (background:#f0f0f0;}
+  .weak {color:#d00; font-weight:bold;}
+  .strong {color:#080; font-weight:bold;}
+  .cert {border:10px double #8B4513; padding:40px; text-align:center; background:#fffef0; margin:30px 0;}
+  @media print {.no-print {display:none;}}
+</style>
+</head>
+<body>
+
+<h1>ITIL 4 Foundation – Real 40-Question Exam</h1>
+<p style="text-align:center">40 questions • 1 mark each • 65 % (26/40) to pass • No timer (practice mode)</p>
+
+<div id="welcome">
+  <p style="text-align:center; font-size:1.2em;">Enter your name for a personalised result</p>
+  <input type="text" id="name" placeholder="Full name" required>
+  <button id="start">START EXAM</button>
+</div>
+
+<div id="examArea">
+  <form id="quiz"></form>
+  <button id="submit">FINISH & SEE RESULT</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+// -------------------------------------------------
+// 40 REAL ITIL 4 FOUNDATION QUESTIONS (area numbers match syllabus)
+const questions = [
+  // ---------- AREA 1 – Key Concepts (5 questions) ----------
+  {q:"What is the definition of a service?", opts:["a) A product sold to customers","b) A means of enabling value co-creation by facilitating outcomes customers want to achieve","c) Only IT support","d) Free software"], a:"b", area:0},
+  {q:"What is 'utility'?", opts:["a) Fit for purpose","b) Fit for use","c) Cost","d) Risk"], a:"a", area:0},
+  {q:"What is 'warranty'?", opts:["a) Assurance that a product or service will meet agreed requirements","b) Perceived benefits","c) The amount paid","d) Configuration"], a:"a", area:0},
+  {q:"Which is a purpose of the 'service desk' practice?", opts:["a) To capture demand for incident resolution and service requests","b) To design services","c) To deploy releases","d) To manage the catalogue"], a:"a", area:0},
+  {q:"What is a 'configuration item' (CI)?", opts:["a) Any component that needs to be managed","b) Only hardware","c) Only software","d) Only documents"], a:"a", area:0},
+
+  // ---------- AREA 2 – Guiding Principles (6 questions) ----------
+  {q:"Which guiding principle focuses on eliminating waste?", opts:["a) Focus on value","b) Keep it simple and practical","c) Collaborate","d) Optimize and automate"], a:"b", area:1},
+  {q:"How many guiding principles are there?", opts:["a) 5","b) 7","c) 9","d) 12"], a:"b", area:1},
+  {q:"Which principle says 'progress iteratively with feedback'?", opts:["a) Focus on value","b) Start where you are","c) Progress iteratively with feedback","d) Think and work holistically"], a:"c", area:1},
+  {q:"Which principle recommends 'optimize and automate'?", opts:["a) Optimize and automate","b) Collaborate and promote visibility","c) Keep it simple and practical","d) Focus on value"], a:"a", area:1},
+  {q:"Which principle says 'collaborate and promote visibility'?", opts:["a) Focus on value","b) Keep it simple","c) Collaborate and promote visibility","d) Start where you are"], a:"c", area:1},
+  {q:"Which principle says 'think and work holistically'?", opts:["a) Think and work holistically","b) Progress iteratively","c) Optimize and automate","d) Focus on value"], a:"a", area:1},
+
+  // ---------- AREA 3 – Four Dimensions (2 questions) ----------
+  {q:"Which is NOT one of the four dimensions of service management?", opts:["a) Organizations and people","b) Customers and users","c) Information and technology","d) Partners and suppliers"], a:"b", area:2},
+  {q:"Which dimension focuses on skills of staff?", opts:["a) Organizations and people","b) Information and technology","c) Partners and suppliers","d) Value streams and processes"], a:"a", area:2},
+
+  // ---------- AREA 4 – Service Value System (1 question) ----------
+  {q:"What is the purpose of the Service Value System (SVS)?", opts:["a) To ensure continual co-creation of value with stakeholders","b) To log incidents","c) To store CIs","d) To monitor only"], a:"a", area:3},
+
+  // ---------- AREA 5 – Service Value Chain (2 questions) ----------
+  {q:"Which value chain activity includes 'obtain/build'?", opts:["a) Engage","b) Design and transition","c) Deliver and support","d) Improve"], a:"b", area:4},
+  {q:"Which value chain activity includes 'plan'?", opts:["a) Plan","b) Improve","c) Engage","d) Design and transition"], a:"a", area:4},
+
+  // ---------- AREA 6 – 15 Practice Purposes (7 questions) ----------
+  {q:"Which practice owns the Continual Improvement Register?", opts:["a) Change enablement","b) Service desk","c) Continual improvement","d) Incident management"], a:"c", area:5},
+  {q:"Which practice reduces the likelihood of incidents?", opts:["a) Incident management","b) Problem management","c) Change enablement","d) Service request management"], a:"b", area:5},
+  {q:"Which is a purpose of 'service level management'?", opts:["a) To set clear business-based targets for service performance","b) To deploy releases","c) To monitor services","d) To store CIs"], a:"a", area:5},
+  {q:"Which practice manages 'major incidents'?", opts:["a) Incident management","b) Problem management","c) Service desk","d) Event management"], a:"a", area:5},
+  {q:"Which practice owns the 'service catalogue'?", opts:["a) Service catalogue management","b) Service level management","c) Portfolio management","d) Business analysis"], a:"a", area:5},
+  {q:"What is the purpose of 'continual improvement'?", opts:["a) To align services with changing business needs","b) To resolve incidents","c) To manage changes","d) To log requests"], a:"a", area:5},
+  {q:"Which practice includes 'capacity and performance management'?", opts:["a) Infrastructure and platform management","b) Software development and management","c) Both","d) Neither"], a:"c", area:5},
+
+  // ---------- AREA 7 – 7 Detailed Practices (17 questions) ----------
+  {q:"Which practice is responsible for 'known errors'?", opts:["a) Problem management","b) Incident management","c) Change enablement","d) Release management"], a:"a", area:6},
+  {q:"Which is a purpose of 'change enablement'?", opts:["a) To control the lifecycle of all changes","b) To resolve problems","c) To deploy releases","d) To monitor events"], a:"a", area:6},
+  {q:"Which is a purpose of 'release management'?", opts:["a) To protect the live environment","b) To resolve incidents","c) To record known errors","d) To make new/changed services available for use"], a:"d", area:6},
+  {q:"What is a 'service request'?", opts:["a) A request from a user for something provided","b) An incident","c) A change","d) A problem"], a:"a", area:6},
+  {q:"Which practice uses 'workarounds'?", opts:["a) Incident management","b) Problem management","c) Both","d) Neither"], a:"c", area:6},
+  {q:"How many ITIL practices in total?", opts:["a) 34","b) 17","c) 7","d) 4"], a:"a", area:6},
+  {q:"Which practice includes 'monitoring and event management'?", opts:["a) Technical management","b) Service management practices","c) General management","d) None"], a:"a", area:6},
+  {q:"Which practice includes 'relationship management'?", opts:["a) Service management practices","b) General management","c) Technical management","d) None"], a:"a", area:6},
+  {q:"What is 'availability'?", opts:["a) Ability to perform as agreed","b) Ability to be used","c) Cost","d) Risk"], a:"a", area:6},
+  {q:"Which is NOT a type of change?", opts:["a) Standard","b) Normal","c) Emergency","d) Major"], a:"d", area:6},
+  {q:"What is a 'request for change' (RFC)?", opts:["a) A formal proposal for a change","b) An incident","c) A problem","d) A service request"], a:"a", area:6},
+  {q:"Which practice includes 'access management'?", opts:["a) Service management practices","b) General management","c) Technical management","d) None"], a:"a", area:6},
+  {q:"Which practice includes 'deployment management'?", opts:["a) Release management","b) Change enablement","c) Service desk","d) Incident management"], a:"a", area:6},
+  {q:"What is the MAIN output of the 'engage' value chain activity?", opts:["a) Requirements","b) Services","c) Changes","d) Incidents"], a:"a", area:6},
+  {q:"Which practice includes 'incident management'?", opts:["a) Service management practices","b) General management","c) Technical management","d) None"], a:"a", area:6},
+  {q:"Which practice includes 'problem management'?", opts:["a) Service management practices","b) General management","c) Technical management","d) None"], a:"a", area:6},
+  {q:"Which practice includes 'service request management'?", opts:["a) Service management practices","b) General management","c) Technical management","d) None"], a:"a", area:6}
+];
+
+// -------------------------------------------------
+// START EXAM
+let userName = "";
+document.getElementById('start').onclick = () => {
+  userName = document.getElementById('name').value.trim() || "Candidate";
+  document.getElementById('welcome').style.display = "none";
+  document.getElementById('examArea').style.display = "block";
+
+  const form = document.getElementById('quiz');
+  questions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = "q";
+    div.innerHTML = `<p><b>${i+1}.</b> ${q.q}</p>`;
+    q.opts.forEach((opt, j) => {
+      div.innerHTML += `<label><input type="radio" name="q${i}" value="${String.fromCharCode(97+j)}"> ${opt}</label>`;
+    });
+    form.appendChild(div);
+  });
+};
+
+// -------------------------------------------------
+// SCORING & RESULT
+const areaNames = [
+  "Key Concepts of Service Management",
+  "ITIL Guiding Principles",
+  "Four Dimensions of Service Management",
+  "Service Value System",
+  "Service Value Chain Activities",
+  "Purpose & Key Terms of 15 Practices",
+  "7 Detailed ITIL Practices"
+];
+const maxMarks = [5,6,2,1,2,7,17];
+const studyLinks = [
+  "https://www.axelos.com/resource-hub/white-paper/itil-4-key-concepts",
+  "https://www.axelos.com/resource-hub/blog/itil-4-the-7-guiding-principles",
+  "https://www.axelos.com/resource-hub/white-paper/itil-4-four-dimensions",
+  "https://www.axelos.com/resource-hub/white-paper/itil-4-service-value-system",
+  "https://www.axelos.com/resource-hub/white-paper/itil-4-service-value-chain",
+  "https://www.peoplecert.org/browse-certifications/itil-4-practices",
+  "https://www.peoplecert.org/browse-certifications/itil-4-practices"
+];
+
+document.getElementById('submit').onclick = () => {
+  let score = 0;
+  const earned = [0,0,0,0,0,0,0];
+  const missed = [];
+
+  questions.forEach((q, i) => {
+    const sel = document.querySelector(`input[name=q${i}]:checked`);
+    if (sel && sel.value === q.a) {
+      score++;
+      earned[q.area]++;
+    } else {
+      missed.push(i+1);
+    }
+  });
+
+  const percent = Math.round(score / 40 * 100);
+  const passed = score >= 26;
+
+  // Build topic table
+  let tableRows = '';
+  const weak = [];
+  for (let i = 0; i < 7; i++) {
+    const pct = Math.round(earned[i] / maxMarks[i] * 100);
+    tableRows += `<tr>
+      <td>${areaNames[i]}</td>
+      <td>${earned[i]}</td>
+      <td>${maxMarks[i]}</td>
+      <td><div class="bar"><div class="fill" style="width:${pct}%"></div></div> ${pct}%</td>
+    </tr>`;
+    if (pct < 70) weak.push(i);
+  }
+
+  // Feedback
+  let feedback = passed
+    ? `<p class="strong">Congratulations, ${userName}! You passed.</p>`
+    : `<p class="weak">Not passed yet – you scored ${score}/40. Focus on these topics:</p><ul>`;
+  if (!passed) {
+    weak.forEach(a => {
+      feedback += `<li class="weak">${areaNames[a]} – <a href="${studyLinks[a]}" target="_blank">Study here</a></li>`;
+    });
+    feedback += `</ul>`;
+  }
+
+  // Certificate
+  const cert = passed ? `
+    <div class="cert">
+      <h2>Certificate of Achievement</h2>
+      <p><strong>${userName}</strong> has passed the<br>ITIL 4 Foundation Practice Exam</p>
+      <p>Score: ${score}/40 (${percent}%) – ${new Date().toLocaleDateString()}</p>
+      <p class="no-print"><button onclick="window.print()">Print Certificate</button></p>
+    </div>` : "";
+
+  document.getElementById('result').innerHTML = `
+    <h1 style="color:#8B4513">Score: ${score}/40 (${percent}%)</h1>
+    ${passed ? '<p class="strong">PASSED!</p>' : '<p class="weak">Keep studying!</p>'}
+    ${feedback}
+    <table><thead><tr><th>Topic</th><th>Correct</th><th>Possible</th><th>Success Rate</th></tr></thead><tbody>${tableRows}</tbody></table>
+    ${cert}
+    <button id="retry" class="no-print">Try Again</button>
+  `;
+  document.getElementById('result').style.display = "block";
+  document.getElementById('examArea').style.display = "none";
+};
+
+// Retry
+document.addEventListener('click', e => {
+  if (e.target.id === "retry") location.reload();
+});
+</script>
+</body>
+</html>
